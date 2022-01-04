@@ -11,10 +11,14 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true
 });
 client.connect((err) => {
-  const collection = client.db("fitdb").collection("devices");
-  // perform actions on the collection object
-  console.log(collection);
-  client.close();
+  if (err) {
+    console.error("connection error", err.stack);
+  } else {
+    const collection = client.db("fitdb").collection("devices");
+    // perform actions on the collection object
+    console.log(collection);
+    client.close();
+  }
 });
 
 // See https://expressjs.com/en/resources/middleware/cors.html
