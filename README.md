@@ -1,2 +1,3 @@
 # fit-backend
-Created with CodeSandbox
+## how to run
+- npm run dev
