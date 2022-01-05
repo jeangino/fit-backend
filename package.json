@@ -5,7 +5,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "dev": "env $(cat .env | grep -v \"#\" | xargs) npm start"
   },
   "dependencies": {
     "cors": "2.8.5",
