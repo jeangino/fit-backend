@@ -1,21 +1,8 @@
+var userController = require("../controllers/userController");
 var express = require("express");
 var router = express.Router();
 
-// middleware that is specific to this router
-router.use(function timeLog(req, res, next) {
-  console.log("Time: ", Date.now());
-  next();
-});
-
-// define the home page route
-router.get("/", function (req, res) {
-  res.json({
-    profile: {
-      firstName: "Etienne",
-      lastName: "Guilhaume",
-      email: "etienne.guilhaume@gmail.com"
-    }
-  });
-});
+router.get("/", userController.user_get);
+router.post("/", userController.user_post);
 
 module.exports = router;
