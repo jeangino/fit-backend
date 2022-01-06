@@ -12,21 +12,14 @@ app.use(cors());
 
 const uri = process.env.MONGODB_URI;
 
-const { MongoClient } = require("mongodb");
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-client.connect((err) => {
-  if (err) {
-    console.error("connection error", err.stack);
-  } else {
-    const collection = client.db("fitdb").collection("devices");
-    // perform actions on the collection object
-    console.log(collection);
-    client.close();
-  }
-});
+var mongoose = require("mongoose");
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, dbName: 'fitdb'});
+//Get the default connection
+var db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
