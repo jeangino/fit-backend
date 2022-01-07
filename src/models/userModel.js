@@ -11,16 +11,5 @@ var UserSchema = new Schema({
   email: { type: String }
 });
 
-UserSchema.virtual("name").get(function () {
-  var fullname = "";
-  if (this.first_name && this.last_name) {
-    fullname = this.last_name + ", " + this.first_name;
-  }
-  if (!this.first_name || !this.last_name) {
-    fullname = "";
-  }
-  return fullname;
-});
-
 //Export function to create "User" model class
 module.exports = mongoose.model("User", UserSchema);

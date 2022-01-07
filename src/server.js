@@ -4,11 +4,13 @@ var cors = require("cors");
 const port = 3000;
 
 /// Our routes
-var usersRouter = require("./routes/user");
-app.use("/users", usersRouter);
+var usersRouter = require("./routes/users");
+var authRouter = require("./routes/google-auth");
 
-// See https://expressjs.com/en/resources/middleware/cors.html
 app.use(cors());
+app.use(express.json());
+app.use("/users", usersRouter);
+app.use("/google-auth", authRouter);
 
 const uri = process.env.MONGODB_URI;
 
