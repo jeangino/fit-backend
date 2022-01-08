@@ -19,11 +19,9 @@ exports.user_get = async function (req, res) {
 
 /// Creates a new user
 exports.user_create = async function (req, res, next) {
-  const options = {"upsert": true, "returnNewDocument": true};
+  const options = {"upsert": true, "new": true};
   var userDetail = await User.findOneAndUpdate({"email": req.body.email}, req.body, options).exec();
-  if (userDetail === null) {
-    userDetail = await User.save(req.body).exec();
-  }
+
   res.set("id", userDetail.id);
   res.sendStatus(200);
 }
