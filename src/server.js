@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const session = require("express-session");
 var cors = require("cors");
 const port = 3000;
 
@@ -9,8 +10,11 @@ var authRouter = require("./routes/google-auth");
 
 app.use(cors());
 app.use(express.json());
-app.use(express.session({
-  cookie: { domain:'.herokuapp.com'}
+app.use(session({
+  secret: "SECRET",
+  cookie: { domain:'.herokuapp.com'},
+  resave: true,
+  saveUninitialized: true
 }));
 app.use("/users", usersRouter);
 app.use("/google-auth", authRouter);
