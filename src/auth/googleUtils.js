@@ -1,14 +1,11 @@
 const { google } = require("googleapis");
+var userController = require("../controllers/usersController");
 
 const googleConfig = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   redirect:
-    "http://" +
-    process.env.DOMAIN +
-    ":" +
-    process.env.PORT +
-    "/google-auth/success",
+    process.env.DOMAIN + ":" + process.env.PORT + "/google-auth/success",
 };
 
 /**
@@ -52,40 +49,15 @@ exports.urlGoogle = function () {
   return url;
 };
 
-function parseJwt(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
-}
-
-exports.getGoogleAccountFromCode = async function (code) {
+exports.getUserIdFromGoogleCode = async function (code, res) {
   const auth = createConnection();
   const data = await auth.getToken(code);
   const tokens = data.tokens;
+  res.cookie("fitToken", data.tokens.id_token);
   auth.setCredentials(tokens);
   const service = google.people({ version: "v1", auth: auth });
-  service.people.get(
-    {
-      resourceName: "people/me",
-      personFields: "emailAddresses,names",
-    },
-    (err, response) => {
-      if (err) return console.error("The API returned an error: " + err);
-      console.log(response.data.emailAddresses);
-      console.log(response.data.names);
-    }
-  );
-
-  console.log(parseJwt(tokens.id_token));
-  console.log(tokens);
+  return service.people.get({
+    resourceName: "people/me",
+    personFields: "emailAddresses,names",
+  });
 };
-

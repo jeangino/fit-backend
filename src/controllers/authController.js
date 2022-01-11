@@ -1,4 +1,5 @@
 var googleUtils = require('../auth/googleUtils');
+var userController = require("../controllers/usersController");
 
 exports.post = function (req, res) {
   const url = googleUtils.urlGoogle();
@@ -7,10 +8,20 @@ exports.post = function (req, res) {
   res.redirect(url);
 };
 
-exports.success = function (req, res) {
-  const xxx = googleUtils.getGoogleAccountFromCode(req.query.code);
-  console.log(xxx);
-  res.sendStatus(200);
+/**
+ * Handle successful login
+ * @param {*} req request
+ * @param {*} res response
+ */
+exports.success = async function (req, res) {
+  const googleData = await googleUtils.getUserIdFromGoogleCode(req.query.code, res);
+  var userDetail = await userController.getUser(
+    googleData.data.emailAddresses[0].value,
+    googleData.data.names[0].givenName,
+    googleData.data.names[0].familyName
+  );
+  res.cookie('fitUserId', userDetail.id);
+  res.redirect(process.env.FRONT_END_DOMAIN);
 }
 
 exports.get = function (req, res) {
