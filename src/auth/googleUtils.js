@@ -54,7 +54,7 @@ exports.getUserFromGoogleCode = async function (code, res) {
   const auth = createConnection();
   const data = await auth.getToken(code);
   const tokens = data.tokens;
-  res.cookie("fitToken", data.tokens.id_token);
+  res.cookie("fitToken", data.tokens.id_token, {domain: ".herokuapp.com"});
   auth.setCredentials(tokens);
   const service = google.people({ version: "v1", auth: auth });
   return service.people.get({

@@ -23,7 +23,7 @@ exports.success = async function (req, res) {
   );
   console.log("DATA FETCHED!");
   console.log("Redirecting to " + process.env.FRONT_END_DOMAIN);
-  res.cookie('fitUserId', userDetail.id);
+  res.cookie('fitUserId', userDetail.id, {domain: ".herokuapp.com"});
   res.redirect(process.env.FRONT_END_DOMAIN);
 }
 
