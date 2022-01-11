@@ -1,11 +1,12 @@
 const { google } = require("googleapis");
-var userController = require("../controllers/usersController");
 
 const googleConfig = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   redirect:
-    process.env.DOMAIN + ":" + process.env.SUCCESS_PORT + "/google-auth/success",
+    process.env.NODE_ENV === "development"
+      ? process.env.DOMAIN + ":" + process.env.PORT + "/google-auth/success"
+      : process.env.DOMAIN + "/google-auth/success",
 };
 
 /**
@@ -49,7 +50,7 @@ exports.urlGoogle = function () {
   return url;
 };
 
-exports.getUserIdFromGoogleCode = async function (code, res) {
+exports.getUserFromGoogleCode = async function (code, res) {
   const auth = createConnection();
   const data = await auth.getToken(code);
   const tokens = data.tokens;

@@ -19,9 +19,15 @@ exports.user_get = async function (req, res) {
   }
 };
 
-exports.getUser = function (email, firstName, lastName) {
+/**
+ * Finds a user with email. Will create the user if the email is not in the db.
+ * @param {*} email find by
+ * @param {*} firstName first name, to be peristed
+ * @param {*} lastName last name, to be persisted
+ * @returns 
+ */
+exports.findOrCreateUser = function (email, firstName, lastName) {
   const options = { upsert: true, new: true };
-  console.log("GET USER: " + email + " " + firstName + " " + lastName);
   return User.findOneAndUpdate(
     { email: email },
     { email: email, firstName: firstName, lastName: lastName },

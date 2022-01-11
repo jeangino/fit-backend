@@ -9,14 +9,14 @@ exports.post = function (req, res) {
 };
 
 /**
- * Handle successful login
+ * Handle successful login.
  * @param {*} req request
  * @param {*} res response
  */
 exports.success = async function (req, res) {
   console.log("SUCCESS!!!");
-  const googleData = await googleUtils.getUserIdFromGoogleCode(req.query.code, res);
-  var userDetail = await userController.getUser(
+  const googleData = await googleUtils.getUserFromGoogleCode(req.query.code, res);
+  var userDetail = await userController.findOrCreateUser(
     googleData.data.emailAddresses[0].value,
     googleData.data.names[0].givenName,
     googleData.data.names[0].familyName
