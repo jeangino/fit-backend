@@ -5,7 +5,7 @@ const googleConfig = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   redirect:
-    process.env.DOMAIN + ":" + process.env.PORT + "/google-auth/success",
+    process.env.DOMAIN + ":" + process.env.SUCCESS_PORT + "/google-auth/success",
 };
 
 /**
