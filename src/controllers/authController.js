@@ -14,12 +14,15 @@ exports.post = function (req, res) {
  * @param {*} res response
  */
 exports.success = async function (req, res) {
+  console.log("SUCCESS!!!");
   const googleData = await googleUtils.getUserIdFromGoogleCode(req.query.code, res);
   var userDetail = await userController.getUser(
     googleData.data.emailAddresses[0].value,
     googleData.data.names[0].givenName,
     googleData.data.names[0].familyName
   );
+  console.log("DATA FETCHED!");
+  console.log("Redirecting to " + process.env.FRONT_END_DOMAIN);
   res.cookie('fitUserId', userDetail.id);
   res.redirect(process.env.FRONT_END_DOMAIN);
 }
