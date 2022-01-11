@@ -9,6 +9,9 @@ var authRouter = require("./routes/google-auth");
 
 app.use(cors());
 app.use(express.json());
+app.use(express.session({
+  cookie: { domain:'.herokuapp.com'}
+}));
 app.use("/users", usersRouter);
 app.use("/google-auth", authRouter);
 
